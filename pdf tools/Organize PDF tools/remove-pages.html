@@ -512,6 +512,7 @@ footer {
 
 
 
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
   <script>
     const fileInput = document.getElementById("fileInput");
     const pageSelection = document.getElementById("pageSelection");
@@ -522,19 +523,30 @@ footer {
     const fileNameDisplay = document.getElementById("fileName");
 
     let pdfFile;
+    let pdfDoc;
     let numPages = 0;
     let selectedPages = [];
 
-    fileInput.addEventListener("change", () => {
+    fileInput.addEventListener("change", async () => {
       insertedPdfList.innerHTML = "";  // Clear list
       pageSelection.innerHTML = "";    // Clear page selection
 
       if (fileInput.files.length > 0) {
         pdfFile = fileInput.files[0];
         fileNameDisplay.textContent = `Selected File: ${pdfFile.name}`;
-        numPages = Math.floor(Math.random() * 20) + 1; // Simulate random page count for demo
-        displayPages(numPages);
-        removeButton.style.display = "inline-block";
+        
+        // Load PDF using PDF-lib
+        const fileReader = new FileReader();
+        fileReader.onload = async (e) => {
+          const pdfBytes = e.target.result;
+          pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
+          numPages = pdfDoc.getPages().length;
+          
+          // Display page selection
+          displayPages(numPages);
+          removeButton.style.display = "inline-block";
+        };
+        fileReader.readAsArrayBuffer(pdfFile);
       }
     });
 
@@ -551,7 +563,7 @@ footer {
 
     function togglePageSelection(pageOption) {
       pageOption.classList.toggle("selected");
-      const pageNum = pageOption.dataset.page;
+      const pageNum = parseInt(pageOption.dataset.page);
 
       if (pageOption.classList.contains("selected")) {
         selectedPages.push(pageNum);
@@ -559,25 +571,40 @@ footer {
         selectedPages = selectedPages.filter(page => page !== pageNum);
       }
 
-      if (selectedPages.length > 0) {
-        removeButton.style.display = "inline-block";
-      } else {
-        removeButton.style.display = "none";
-      }
+      removeButton.style.display = selectedPages.length > 0 ? "inline-block" : "none";
     }
 
-    removeButton.addEventListener("click", () => {
+    removeButton.addEventListener("click", async () => {
       outputMessage.style.display = "block";
-      // Simulate PDF page removal process
-      setTimeout(() => {
-        outputMessage.textContent = `Removed pages: ${selectedPages.join(", ")}`;
-        downloadButton.style.display = "inline-block";
-      }, 2000);
-    });
+      outputMessage.textContent = `Removing pages, please wait...`;
 
-    downloadButton.addEventListener("click", () => {
-      const fakeDownloadUrl = "https://example.com/modified.pdf";
-      window.location.href = fakeDownloadUrl;
+      // Remove selected pages from the document
+      const pagesToRemove = new Set(selectedPages);
+      const newPdf = await PDFLib.PDFDocument.create();
+      const pages = pdfDoc.getPages();
+
+      for (let i = 0; i < pages.length; i++) {
+        if (!pagesToRemove.has(i + 1)) {
+          const [copiedPage] = await newPdf.copyPages(pdfDoc, [i]);
+          newPdf.addPage(copiedPage);
+        }
+      }
+
+      // Prepare the modified PDF for download
+      const modifiedPdfBytes = await newPdf.save();
+      
+      // Create a download link for the modified PDF
+      const downloadUrl = URL.createObjectURL(new Blob([modifiedPdfBytes], { type: "application/pdf" }));
+      
+      // Trigger the download automatically
+      downloadButton.href = downloadUrl;
+      downloadButton.download = "modified_pdf.pdf"; // This triggers the download
+      downloadButton.style.display = "inline-block";
+      
+      // Optionally, trigger the click event of the download button programmatically
+      downloadButton.click();
+      
+      outputMessage.textContent = `Pages removed: ${selectedPages.join(", ")}`;
     });
 
     function toggleMenu() {
