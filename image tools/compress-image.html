@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Image Compressor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e2a38;
+      color: white;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #9574f7;
+      margin-top: 20px;
+    }
+
+    h2 {
+      font-size: 1rem;
+      color: #b0bcd4;
+      margin-bottom: 20px;
+    }
+
+    .upload-container {
+      width: 80%;
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 2px dashed #9574f7;
+      border-radius: 10px;
+      background-color: #2b3b4d;
+      position: relative;
+    }
+
+    .upload-container:hover {
+      background-color: #3a4d63;
+    }
+
+    .upload-container .icon {
+      font-size: 5rem;
+      color: #b0bcd4;
+      margin: 20px 0;
+    }
+
+    .upload-container p {
+      font-size: 1rem;
+      margin: 10px 0;
+    }
+
+    .upload-container .or {
+      margin: 10px 0;
+      color: #b0bcd4;
+    }
+
+    .upload-container label {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #9574f7;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .upload-container label:hover {
+      background-color: #7a5bd9;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    .button-container {
+      margin: 20px 0;
+    }
+
+    .button-container button {
+      margin: 5px;
+      padding: 10px 15px;
+      background-color: #9574f7;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    .button-container button:hover {
+      background-color: #7a5bd9;
+    }
+
+    #qualityInput {
+      width: 80%;
+      max-width: 300px;
+      margin: 20px auto;
+      display: block;
+    }
+
+    canvas {
+      max-width: 100%;
+      margin-top: 20px;
+      border: 2px solid #9574f7;
+    }
+
+    .dimension-controls {
+        margin: 20px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+
+    .dimension-controls label {
+      font-size: 1rem;
+      color: #b0bcd4;
+    }
+
+
+    
+    .dimension-controls input {
+      margin: 5px;
+      padding: 10px;
+      width: 100px;
+      border: 1px solid #b0bcd4;
+      border-radius: 5px;
+      background-color: #2b3b4d;
+      color: white;
+      text-align: center;
+      font-size: 1rem;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .dimension-controls input[type="number"]:hover {
+      border-color: #7a5bd9;
+    .dimension-controls input:focus {
+      background-color: #3a4d63;
+    }
+    }
+    .dimension-controls input[type="number"]:focus {
+      border-color: #9574f7;
+      background-color: #3a4d63;
+      outline: none;
+    }
+
+    .dimension-controls input[type="checkbox"] {
+      width: auto;
+      margin-left: 10px;
+    }
+
+    .dimension-controls label span {
+      margin-left: 5px;
+      font-size: 0.9rem;
+      color: #b0bcd4;
+    }
+
+    
+      /* Navbar Styles */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      padding: 1rem 2rem;
+      color: white;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .navbar .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .navbar .menu {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .navbar .menu a {
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .navbar .menu a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .navbar .search-container {
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 20px;
+      padding: 0.3rem 0.5rem;
+    }
+
+    .navbar .search-bar {
+      border: none;
+      outline: none;
+      padding: 0.5rem;
+      border-radius: 20px;
+      width: 150px;
+    }
+
+    .navbar .search-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .navbar .btn {
+      background: #ff7eb3;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .navbar .btn:hover {
+      background: #ff5c9c;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-wrap: wrap;
+      }
+
+      .navbar .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: linear-gradient(90deg, #6a11cb, #2575fc);
+        padding: 1rem 0;
+      }
+
+      .navbar .menu a {
+        text-align: center;
+        margin: 0.5rem 0;
+      }
+
+      .navbar .menu-toggle {
+        display: block;
+      }
+
+      .navbar .menu.active {
+        display: flex;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .navbar .search-bar {
+        width: 300px;
+      }
+    }
+    /* Footer Styling */
+footer {
+  background: #141b26; /* Subtle dark blue background */
+  padding: 60px 0;
+  text-align: center;
+  color: #fff;
+  animation: fadeInFooter 2s ease-out;
+  font-family: 'Arial', sans-serif;
+  box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer Content Wrapper */
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Website Name Styling with Animation */
+.website-name {
+  font-size: 28px;
+  color: #ffdc00; /* Gold for the website name */
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: glowEffect 2s infinite alternate; /* Add glowing animation */
+}
+
+/* Animation for Glowing Effect */
+@keyframes glowEffect {
+  0% {
+      text-shadow: 0 0 10px #ffdc00, 0 0 20px #ffdc00, 0 0 30px #ffdc00;
+  }
+  100% {
+      text-shadow: 0 0 20px #ffc700, 0 0 40px #ffc700, 0 0 60px #ffc700;
+  }
+}
+
+/* Footer Links Styling */
+.footer-links {
+  margin-bottom: 30px;
+}
+
+.footer-link {
+  color: #fff;
+  font-size: 18px;
+  text-decoration: none;
+  margin: 0 20px;
+  padding: 5px 0;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+/* Adding hover underline effect */
+.footer-link:hover {
+  color: #ffdc00;
+}
+
+.footer-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background-color: #ffdc00;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.footer-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Footer Button Container */
+.footer-btn-container {
+  margin-top: 20px;
+}
+
+/* Footer Button Styling */
+.footer-btn {
+  background-color: #ffdc00;
+  color: #1a1a1a;
+  border: none;
+  padding: 12px 24px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer-btn:hover {
+  background-color: #e0b200;
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer Text */
+.footer-text {
+  font-size: 14px;
+  margin-top: 20px;
+  color: #f0f0f0;
+  letter-spacing: 0.5px;
+}
+
+/* Highlighted Name in Footer Text */
+.highlight-name {
+  color: #ffdc00;
+  font-weight: bold;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .footer-links {
+      margin-bottom: 20px;
+  }
+
+  .footer-btn-container {
+      margin-top: 15px;
+  }
+
+  .footer-text {
+      font-size: 12px;
+  }
+
+  .footer-link {
+      font-size: 16px;
+      margin: 0 15px;
+  }
+
+  .website-name {
+      font-size: 24px;
+  }
+}
+
+/* Animation for Footer */
+@keyframes fadeInFooter {
+  0% {
+      opacity: 0;
+      transform: translateY(30px);
+  }
+  100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">OneTooly</div>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    <div class="menu">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="terms and conditons.html">Terms and Conditions</a>
+      <a href="contact us.html">Contact</a>
+    
+      <a href="https://rzp.io/rzp/N4XulPA1" class="btn">Support Us</a>
+    </div>
+  </div>
+
+
+  <h1>Advanced Image Compressor</h1>
+  <h2>Upload and compress your images with adjustable quality and dimensions.</h2>
+
+  <div class="upload-container">
+    <div class="icon">📁</div>
+    <p>Drag your image file to start uploading.</p>
+    <div class="or">— OR —</div>
+    <label for="fileInput">Browse files</label>
+    <input type="file" id="fileInput" accept="image/*" />
+    <p id="fileName">No file selected</p>
+  </div>
+
+  <canvas id="canvas"></canvas>
+
+  <div class="dimension-controls">
+    <label for="widthInput">Width:</label>
+    <input type="number" id="widthInput" placeholder="Width">
+    <label for="heightInput">Height:</label>
+    <input type="number" id="heightInput" placeholder="Height">
+    <label>
+      <input type="checkbox" id="preserveAspectRatio" checked>
+      Preserve Aspect Ratio
+    </label>
+  </div>
+
+  <div class="button-container">
+    <label for="qualityInput">Compression Quality: <span id="qualityValue">0.8</span></label>
+    <input type="range" id="qualityInput" min="0.1" max="1.0" step="0.1" value="0.8">
+    <button id="applyDimensionsButton">Apply Dimensions</button>
+    <button id="compressButton">Compress</button>
+    <button id="downloadButton" style="display: none;">Download</button>
+  </div>
+  <footer>
+    <div class="footer-content">
+      <h2 class="website-name">OneTooly</h2>
+      <div class="footer-links">
+        <a href="about.html" class="footer-link">About</a>
+        <a href="terms and conditons.html" class="footer-link">Terms and Conditions</a>
+        <a href="contact us.html" class="footer-link">Contact</a>
+      </div>
+      <div class="footer-btn-container">
+        <a href="https://rzp.io/rzp/N4XulPA1" target="_blank">
+            <button class="footer-btn">Support Us</button>
+        </a>
+    </div>
+      <p class="footer-text">All Rights Reserved &copy; 2025 | <span class="highlight-name">OneTooly</span></p>
+    </div>
+  </footer>
+
+
+
+
+  <script>
+     const menuToggle = document.querySelector(".menu-toggle");
+    const menu = document.querySelector(".menu");
+
+    function toggleMenu() {
+      menu.classList.toggle("active");
+    }
+    const fileInput = document.getElementById("fileInput");
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const fileNameDisplay = document.getElementById("fileName");
+
+    const qualityInput = document.getElementById("qualityInput");
+    const qualityValue = document.getElementById("qualityValue");
+    const compressButton = document.getElementById("compressButton");
+    const downloadButton = document.getElementById("downloadButton");
+
+    const widthInput = document.getElementById("widthInput");
+    const heightInput = document.getElementById("heightInput");
+    const preserveAspectRatio = document.getElementById("preserveAspectRatio");
+    const applyDimensionsButton = document.getElementById("applyDimensionsButton");
+
+    let img = new Image();
+    let originalImageData = null;
+
+    fileInput.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        img.src = reader.result;
+        img.onload = () => {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+          originalImageData = canvas.toDataURL("image/png");
+          widthInput.value = img.width;
+          heightInput.value = img.height;
+        };
+      };
+      reader.readAsDataURL(file);
+      fileNameDisplay.textContent = `Selected: ${file.name}`;
+      downloadButton.style.display = "none";
+    });
+
+    qualityInput.addEventListener("input", () => {
+      qualityValue.textContent = qualityInput.value;
+    });
+
+    applyDimensionsButton.addEventListener("click", () => {
+      const newWidth = parseInt(widthInput.value, 10);
+      const newHeight = parseInt(heightInput.value, 10);
+
+      if (preserveAspectRatio.checked) {
+        const aspectRatio = img.width / img.height;
+        if (newWidth && !newHeight) {
+          heightInput.value = Math.round(newWidth / aspectRatio);
+        } else if (newHeight && !newWidth) {
+          widthInput.value = Math.round(newHeight * aspectRatio);
+        }
+      }
+
+      canvas.width = widthInput.value;
+      canvas.height = heightInput.value;
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    });
+
+    compressButton.addEventListener("click", () => {
+      const quality = parseFloat(qualityInput.value);
+      const compressedDataURL = canvas.toDataURL("image/jpeg", quality);
+
+      const tempImg = new Image();
+      tempImg.src = compressedDataURL;
+      tempImg.onload = () => {
+        canvas.width = tempImg.width;
+        canvas.height = tempImg.height;
+        ctx.drawImage(tempImg, 0, 0);
+        downloadButton.style.display = "inline-block";
+      };
+    });
+
+    downloadButton.addEventListener("click", () => {
+      const link = document.createElement("a");
+      link.download = "compressed-image.jpg";
+      link.href = canvas.toDataURL("image/jpeg", parseFloat(qualityInput.value));
+      link.click();
+    });
+  </script>
+</body>
+</html>

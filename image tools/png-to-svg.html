@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PNG to SVG Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e2a38;
+      color: white;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #9574f7;
+      margin-top: 20px;
+    }
+
+    h2 {
+      font-size: 1rem;
+      color: #b0bcd4;
+      margin-bottom: 20px;
+    }
+
+    .upload-container {
+      width: 80%;
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 2px dashed #9574f7;
+      border-radius: 10px;
+      background-color: #2b3b4d;
+      position: relative;
+    }
+
+    .upload-container:hover {
+      background-color: #3a4d63;
+    }
+
+    .upload-container .icon {
+      font-size: 5rem;
+      color: #b0bcd4;
+      margin: 20px 0;
+    }
+
+    .upload-container p {
+      font-size: 1rem;
+      margin: 10px 0;
+    }
+
+    .upload-container .or {
+      margin: 10px 0;
+      color: #b0bcd4;
+    }
+
+    .upload-container label {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #9574f7;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .upload-container label:hover {
+      background-color: #7a5bd9;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    #convertButton {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #9574f7;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    #convertButton:hover {
+      background-color: #7a5bd9;
+    }
+
+    #downloadLink {
+      display: none;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #2575fc;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    #downloadLink:hover {
+      background-color: #6a11cb;
+    }
+
+    #fileName {
+      margin-top: 10px;
+      font-size: 1rem;
+      color: #b0bcd4;
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      padding: 1rem 2rem;
+      color: white;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .navbar .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .navbar .menu {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .navbar .menu a {
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .navbar .menu a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .navbar .search-container {
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 20px;
+      padding: 0.3rem 0.5rem;
+    }
+
+    .navbar .search-bar {
+      border: none;
+      outline: none;
+      padding: 0.5rem;
+      border-radius: 20px;
+      width: 150px;
+    }
+
+    .navbar .search-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .navbar .btn {
+      background: #ff7eb3;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .navbar .btn:hover {
+      background: #ff5c9c;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-wrap: wrap;
+      }
+
+      .navbar .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: linear-gradient(90deg, #6a11cb, #2575fc);
+        padding: 1rem 0;
+      }
+
+      .navbar .menu a {
+        text-align: center;
+        margin: 0.5rem 0;
+      }
+
+      .navbar .menu-toggle {
+        display: block;
+      }
+
+      .navbar .menu.active {
+        display: flex;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .navbar .search-bar {
+        width: 300px;
+      }
+    }
+
+    /* Footer Styling */
+footer {
+  background: #141b26; /* Subtle dark blue background */
+  padding: 60px 0;
+  text-align: center;
+  color: #fff;
+  animation: fadeInFooter 2s ease-out;
+  font-family: 'Arial', sans-serif;
+  box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer Content Wrapper */
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Website Name Styling with Animation */
+.website-name {
+  font-size: 28px;
+  color: #ffdc00; /* Gold for the website name */
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: glowEffect 2s infinite alternate; /* Add glowing animation */
+}
+
+/* Animation for Glowing Effect */
+@keyframes glowEffect {
+  0% {
+      text-shadow: 0 0 10px #ffdc00, 0 0 20px #ffdc00, 0 0 30px #ffdc00;
+  }
+  100% {
+      text-shadow: 0 0 20px #ffc700, 0 0 40px #ffc700, 0 0 60px #ffc700;
+  }
+}
+
+/* Footer Links Styling */
+.footer-links {
+  margin-bottom: 30px;
+}
+
+.footer-link {
+  color: #fff;
+  font-size: 18px;
+  text-decoration: none;
+  margin: 0 20px;
+  padding: 5px 0;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+/* Adding hover underline effect */
+.footer-link:hover {
+  color: #ffdc00;
+}
+
+.footer-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background-color: #ffdc00;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.footer-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Footer Button Container */
+.footer-btn-container {
+  margin-top: 20px;
+}
+
+/* Footer Button Styling */
+.footer-btn {
+  background-color: #ffdc00;
+  color: #1a1a1a;
+  border: none;
+  padding: 12px 24px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer-btn:hover {
+  background-color: #e0b200;
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer Text */
+.footer-text {
+  font-size: 14px;
+  margin-top: 20px;
+  color: #f0f0f0;
+  letter-spacing: 0.5px;
+}
+
+/* Highlighted Name in Footer Text */
+.highlight-name {
+  color: #ffdc00;
+  font-weight: bold;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .footer-links {
+      margin-bottom: 20px;
+  }
+
+  .footer-btn-container {
+      margin-top: 15px;
+  }
+
+  .footer-text {
+      font-size: 12px;
+  }
+
+  .footer-link {
+      font-size: 16px;
+      margin: 0 15px;
+  }
+
+  .website-name {
+      font-size: 24px;
+  }
+}
+
+/* Animation for Footer */
+@keyframes fadeInFooter {
+  0% {
+      opacity: 0;
+      transform: translateY(30px);
+  }
+  100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+  </style>
+   
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">OneTooly</div>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    <div class="menu">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="terms and conditons.html">Terms and Conditions</a>
+      <a href="contact us.html">Contact</a>
+    
+      <a href="https://rzp.io/rzp/N4XulPA1" class="btn">Support Us</a>
+    </div>
+  </div>
+
+
+
+  <h1>PNG to SVG Converter</h1>
+  <h2>Easily convert PNG images to SVG format online.</h2>
+
+  <div class="upload-container" id="dropZone">
+    <div class="icon">📁</div>
+    <p>Drag your image file to start uploading.</p>
+    <div class="or">— OR —</div>
+    <label for="fileInput">Browse files</label>
+    <input type="file" id="fileInput" accept=".png" />
+    <p id="fileName">No file selected</p>
+    <button id="convertButton">Convert to SVG</button>
+    <a id="downloadLink">Download SVG</a>
+  </div>
+  
+  <footer>
+    <div class="footer-content">
+      <h2 class="website-name">OneTooly</h2>
+      <div class="footer-links">
+        <a href="about.html" class="footer-link">About</a>
+        <a href="terms and conditons.html" class="footer-link">Terms and Conditions</a>
+        <a href="contact us.html" class="footer-link">Contact</a>
+      </div>
+      <div class="footer-btn-container">
+        <a href="https://rzp.io/rzp/N4XulPA1" target="_blank">
+            <button class="footer-btn">Support Us</button>
+        </a>
+    </div>
+      <p class="footer-text">All Rights Reserved &copy; 2025 | <span class="highlight-name">OneTooly</span></p>
+    </div>
+  </footer>
+
+
+
+
+  <script>
+     const menuToggle = document.querySelector(".menu-toggle");
+    const menu = document.querySelector(".menu");
+
+    function toggleMenu() {
+      menu.classList.toggle("active");
+    }
+    const fileInput = document.getElementById("fileInput");
+const convertButton = document.getElementById("convertButton");
+const downloadLink = document.getElementById("downloadLink");
+const fileNameDisplay = document.getElementById("fileName");
+
+// Update file name when a file is selected
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files[0];
+  if (file) {
+    fileNameDisplay.textContent = `Selected: ${file.name}`;
+  } else {
+    fileNameDisplay.textContent = "No file selected";
+  }
+});
+
+// Convert PNG to SVG on button click
+convertButton.addEventListener("click", () => {
+  const file = fileInput.files[0];
+  if (!file) {
+    alert("Please select a PNG file to convert.");
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    const img = new Image();
+    img.src = reader.result;
+
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      // Draw the image onto the canvas
+      ctx.drawImage(img, 0, 0);
+
+      // Get pixel data from the image
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const width = imageData.width;
+      const height = imageData.height;
+
+      // Build SVG content
+      let svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}">\n`;
+
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const i = (y * width + x) * 4; // RGBA values
+          const r = imageData.data[i];
+          const g = imageData.data[i + 1];
+          const b = imageData.data[i + 2];
+          const a = imageData.data[i + 3];
+
+          if (a > 0) { // Non-transparent pixels
+            const fillColor = `rgba(${r},${g},${b},${a / 255})`;
+            svgContent += `<rect x="${x}" y="${y}" width="1" height="1" fill="${fillColor}" />\n`;
+          }
+        }
+      }
+
+      svgContent += "</svg>";
+
+      // Create SVG file for download
+      const blob = new Blob([svgContent], { type: "image/svg+xml" });
+      const url = URL.createObjectURL(blob);
+
+      // Update download link
+      downloadLink.href = url;
+      downloadLink.download = "converted-image.svg";
+      downloadLink.style.display = "inline-block";
+
+      console.log("Conversion successful. SVG ready for download.");
+    };
+
+    img.onerror = () => alert("Error loading the image. Please try again with a valid PNG file.");
+  };
+
+  reader.onerror = () => alert("Error reading the file. Please ensure it's a valid PNG image.");
+  reader.readAsDataURL(file);
+});
+
+  </script>
+  
+</body>
+</html>
