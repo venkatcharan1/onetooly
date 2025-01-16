@@ -561,7 +561,7 @@ footer {
 
 
 
-
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
   <script>
     const fileInput = document.getElementById("fileInput");
     const pageRange = document.getElementById("pageRange");
@@ -574,35 +574,87 @@ footer {
     const progressText = document.getElementById("progressText");
     const fileNameDisplay = document.getElementById("fileName");
 
-    fileInput.addEventListener("change", () => {
+    let originalPdfBytes;
+
+    // Handle file input change
+    fileInput.addEventListener("change", async () => {
       insertedPdfList.innerHTML = "";  // Clear list
       for (const file of fileInput.files) {
         const li = document.createElement("li");
         li.textContent = file.name;
         insertedPdfList.appendChild(li);
+        const arrayBuffer = await file.arrayBuffer();
+        originalPdfBytes = arrayBuffer;
       }
 
       if (fileInput.files.length > 0) {
         splitButton.style.display = "inline-block";
+        fileNameDisplay.textContent = `Selected File: ${fileInput.files[0].name}`;
       } else {
         splitButton.style.display = "none";
       }
-
-      // Show file name for the first file
-      fileNameDisplay.textContent = `Selected File: ${fileInput.files[0].name}`;
     });
 
-    splitButton.addEventListener("click", () => {
+    // Split PDF functionality
+    splitButton.addEventListener("click", async () => {
+      const pageRangeText = pageRange.value.trim();
+      console.log("Entered page range: ", pageRangeText);
+      
+      const rangePattern = /^(\d+)-(\d+)$/;
+      const match = pageRangeText.match(rangePattern);
+      
+      if (!match) {
+        alert("Invalid page range format. Please use the format '1-5'.");
+        return;
+      }
+
+      let start = parseInt(match[1]);
+      let end = parseInt(match[2]);
+      console.log("Parsed page range:", start, end);
+
+      // Load the original PDF
+      const pdfDoc = await PDFLib.PDFDocument.load(originalPdfBytes);
+      const totalPages = pdfDoc.getPages().length;
+      console.log("Total pages in original PDF:", totalPages);
+
+      // Validate page range
+      if (start < 1 || end > totalPages || start > end) {
+        alert("Page range is out of bounds.");
+        return;
+      }
+
       outputMessage.style.display = "block";
       progressContainer.style.display = "block";
       let progress = 0;
 
-      const interval = setInterval(() => {
-        progress += 10;
-        progressBar.style.width = `${progress}%`;
-        progressText.textContent = `Splitting... ${progress}%`;
+      // Create a new PDF document
+      const newPdfDoc = await PDFLib.PDFDocument.create();
 
-        if (progress >= 100) {
+      // Add selected pages to the new PDF
+      for (let i = start - 1; i < end; i++) {
+        const [copiedPage] = await newPdfDoc.copyPages(pdfDoc, [i]);
+        newPdfDoc.addPage(copiedPage);
+      }
+
+      // Generate the new PDF
+      const newPdfBytes = await newPdfDoc.save();
+
+      // Create a Blob from the new PDF and generate a URL
+      const blob = new Blob([newPdfBytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+
+      // Set the download button to link to the new PDF
+      downloadButton.href = url;
+      downloadButton.download = `split-pages-${start}-${end}.pdf`;
+
+      // Update progress
+      let splitProgress = 0;
+      const interval = setInterval(() => {
+        splitProgress += 10;
+        progressBar.style.width = `${splitProgress}%`;
+        progressText.textContent = `Splitting... ${splitProgress}%`;
+
+        if (splitProgress >= 100) {
           clearInterval(interval);
           setTimeout(() => {
             progressContainer.style.display = "none";
@@ -612,18 +664,6 @@ footer {
         }
       }, 500);
     });
-
-    downloadButton.addEventListener("click", () => {
-      const fakeSplitPdfUrl = "https://example.com/split.pdf";
-      window.location.href = fakeSplitPdfUrl;
-    });
-    
-    const menuToggle = document.querySelector(".menu-toggle");
-    const menu = document.querySelector(".menu");
-
-    function toggleMenu() {
-      menu.classList.toggle("active");
-    }
   </script>
 </body>
 </html>
