@@ -6,27 +6,143 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
 
+  <url>
+    <loc>https://onetooly.netlify.app/</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>1.00</priority>
+  </url>
 
-<url>
-  <loc>https://onetooly.netlify.app/</loc>
-  <lastmod>2025-01-17T07:36:13+00:00</lastmod>
-  <priority>1.00</priority>
-</url>
-<url>
-  <loc>https://onetooly.netlify.app/about</loc>
-  <lastmod>2025-01-17T07:36:13+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://onetooly.netlify.app/terms%20and%20conditons.html</loc>
-  <lastmod>2025-01-17T07:36:13+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://onetooly.netlify.app/contact%20us.html</loc>
-  <lastmod>2025-01-17T07:36:13+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
+  <!-- About Page -->
+  <url>
+    <loc>https://onetooly.netlify.app/about.html</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
 
+  <!-- Terms and Conditions -->
+  <url>
+    <loc>https://onetooly.netlify.app/terms-and-conditions.html</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
 
+  <!-- Contact Us -->
+  <url>
+    <loc>https://onetooly.netlify.app/contact-us.html</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Image Tools -->
+  <url>
+    <loc>https://onetooly.netlify.app/webp-to-png</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.netlify.app/webp-to-jpg</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.netlify.app/png-to-jpg</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.netlify.app/png-to-svg</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.netlify.app/jpg-to-png</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.netlify.app/jpg-to-svg</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.netlify.app/svg-to-png</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.netlify.app/image-cropper</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.netlify.app/compress-image</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.netlify.app/image-to-base64</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.netlify.app/base64-to-image</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.netlify.app/black-and-white</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- PDF Tools -->
+  <url>
+    <loc>https://onetooly.netlify.app/jpg-to-pdf</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.netlify.app/word-to-pdf</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.netlify.app/html-to-pdf</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.netlify.app/pdf-to-jpg</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.netlify.app/pdf-to-powerpoint</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.netlify.app/pdf-to-excel</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Other Tools -->
+  <url>
+    <loc>https://onetooly.netlify.app/qr-code-generator</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.netlify.app/email-template-creator</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Coding Resources -->
+  <url>
+    <loc>https://onetooly.netlify.app/coding-resources</loc>
+    <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+    <priority>0.85</priority>
+  </url>
 </urlset>
