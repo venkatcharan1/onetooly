@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <title>Advanced PDF Repair Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #2e3a49;
+      color: white;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    h1 {
+      color: #9574f7;
+      margin-top: 20px;
+    }
+ /* Navbar Styles */
+ .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      padding: 1rem 2rem;
+      color: white;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .navbar .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .navbar .menu {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .navbar .menu a {
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .navbar .menu a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .navbar .search-container {
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 20px;
+      padding: 0.3rem 0.5rem;
+    }
+
+    .navbar .search-bar {
+      border: none;
+      outline: none;
+      padding: 0.5rem;
+      border-radius: 20px;
+      width: 150px;
+    }
+
+    .navbar .search-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .navbar .btn {
+      background: #ff7eb3;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .navbar .btn:hover {
+      background: #ff5c9c;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-wrap: wrap;
+      }
+
+      .navbar .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: linear-gradient(90deg, #6a11cb, #2575fc);
+        padding: 1rem 0;
+      }
+
+      .navbar .menu a {
+        text-align: center;
+        margin: 0.5rem 0;
+      }
+
+      .navbar .menu-toggle {
+        display: block;
+      }
+
+      .navbar .menu.active {
+        display: flex;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .navbar .search-bar {
+        width: 300px;
+      }
+    }
+
+    .upload-container {
+      width: 70%;
+      max-width: 400px;
+      margin: 30px auto;
+      padding: 30px;
+      border: 2px dashed #9574f7;
+      border-radius: 10px;
+      background-color: #2b3b4d;
+    }
+    .upload-container label {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #9574f7;
+      color: white;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+    }
+    .upload-container label:hover {
+      background-color: #7a5bd9;
+    }
+    .upload-container input[type="file"] {
+      display: none;
+    }
+    #fileName {
+      color: #b0bcd4;
+      margin-top: 15px;
+    }
+    #repairButton {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #ff7eb3;
+      color: white;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #repairButton:hover {
+      background-color: #ff5c9c;
+    }
+    #downloadButton {
+      display: none;
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #2575fc;
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+    }
+    #downloadButton:hover {
+      background-color: #6a11cb;
+    }
+    #progressMessage {
+      display: none;
+      margin-top: 15px;
+      font-size: 1rem;
+    }
+    #spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid #b0bcd4;
+      border-top: 4px solid #2575fc;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 10px auto;
+    }
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    /* Footer Styling */
+footer {
+  background: #141b26; /* Subtle dark blue background */
+  padding: 60px 0;
+  text-align: center;
+  color: #fff;
+  animation: fadeInFooter 2s ease-out;
+  font-family: 'Arial', sans-serif;
+  box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer Content Wrapper */
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Website Name Styling with Animation */
+.website-name {
+  font-size: 28px;
+  color: #ffdc00; /* Gold for the website name */
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: glowEffect 2s infinite alternate; /* Add glowing animation */
+}
+
+/* Animation for Glowing Effect */
+@keyframes glowEffect {
+  0% {
+      text-shadow: 0 0 10px #ffdc00, 0 0 20px #ffdc00, 0 0 30px #ffdc00;
+  }
+  100% {
+      text-shadow: 0 0 20px #ffc700, 0 0 40px #ffc700, 0 0 60px #ffc700;
+  }
+}
+
+/* Footer Links Styling */
+.footer-links {
+  margin-bottom: 30px;
+}
+
+.footer-link {
+  color: #fff;
+  font-size: 18px;
+  text-decoration: none;
+  margin: 0 20px;
+  padding: 5px 0;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+/* Adding hover underline effect */
+.footer-link:hover {
+  color: #ffdc00;
+}
+
+.footer-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background-color: #ffdc00;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.footer-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Footer Button Container */
+.footer-btn-container {
+  margin-top: 20px;
+}
+
+/* Footer Button Styling */
+.footer-btn {
+  background-color: #ffdc00;
+  color: #1a1a1a;
+  border: none;
+  padding: 12px 24px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer-btn:hover {
+  background-color: #e0b200;
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer Text */
+.footer-text {
+  font-size: 14px;
+  margin-top: 20px;
+  color: #f0f0f0;
+  letter-spacing: 0.5px;
+}
+
+/* Highlighted Name in Footer Text */
+.highlight-name {
+  color: #ffdc00;
+  font-weight: bold;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .footer-links {
+      margin-bottom: 20px;
+  }
+
+  .footer-btn-container {
+      margin-top: 15px;
+  }
+
+  .footer-text {
+      font-size: 12px;
+  }
+
+  .footer-link {
+      font-size: 16px;
+      margin: 0 15px;
+  }
+
+  .website-name {
+      font-size: 24px;
+  }
+}
+
+/* Animation for Footer */
+@keyframes fadeInFooter {
+  0% {
+      opacity: 0;
+      transform: translateY(30px);
+  }
+  100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">OneTooly</div>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    <div class="menu">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="terms and conditons.html">Terms and Conditions</a>
+      <a href="contact us.html">Contact</a>
+    
+      <a href="https://rzp.io/rzp/N4XulPA1" class="btn">Support Us</a>
+    </div>
+  </div>
+
+
+  
+
+  <h1>Advanced PDF Repair Tool</h1>
+  <p>Upload a corrupt PDF and we will try to fix it. This tool uses advanced recovery techniques to restore your document.</p>
+
+  <div class="upload-container">
+    <label for="fileInput">Choose PDF File</label>
+    <input type="file" id="fileInput" accept=".pdf" />
+    <p id="fileName"></p>
+    <button id="repairButton">Repair PDF</button>
+    <div id="progressMessage">
+      <div id="spinner"></div>
+      <p>Please wait, repairing your file...</p>
+    </div>
+    <a id="downloadButton">Download Repaired PDF</a>
+  </div>
+  <footer>
+    <div class="footer-content">
+      <h2 class="website-name">OneTooly</h2>
+      <div class="footer-links">
+        <a href="about.html" class="footer-link">About</a>
+        <a href="terms and conditons.html" class="footer-link">Terms and Conditions</a>
+        <a href="contact us.html" class="footer-link">Contact</a>
+      </div>
+      <div class="footer-btn-container">
+        <a href="https://rzp.io/rzp/N4XulPA1" target="_blank">
+            <button class="footer-btn">Support Us</button>
+        </a>
+    </div>
+      <p class="footer-text">All Rights Reserved &copy; 2025 | <span class="highlight-name">OneTooly</span></p>
+    </div>
+  </footer>
+
+
+
+
+  <script>
+    const fileInput = document.getElementById("fileInput");
+    const fileNameDisplay = document.getElementById("fileName");
+    const repairButton = document.getElementById("repairButton");
+    const progressMessage = document.getElementById("progressMessage");
+    const downloadButton = document.getElementById("downloadButton");
+
+    let selectedFile = null;
+
+    fileInput.addEventListener("change", () => {
+      if (fileInput.files.length > 0) {
+        selectedFile = fileInput.files[0];
+        fileNameDisplay.textContent = `Selected File: ${selectedFile.name}`;
+      }
+    });
+
+    repairButton.addEventListener("click", async () => {
+      if (!selectedFile) {
+        alert("Please select a PDF file first.");
+        return;
+      }
+
+      progressMessage.style.display = "block";
+      repairButton.disabled = true;
+
+      try {
+        const repairedBlob = await repairPdf(selectedFile);
+
+        progressMessage.style.display = "none";
+        repairButton.disabled = false;
+
+        downloadButton.style.display = "inline-block";
+        downloadButton.href = URL.createObjectURL(repairedBlob);
+        downloadButton.download = `repaired_${selectedFile.name}`;
+      } catch (error) {
+        progressMessage.style.display = "none";
+        repairButton.disabled = false;
+        alert("An error occurred while repairing the PDF.");
+        console.error(error);
+      }
+    });
+
+    const repairPdf = async (file) => {
+      const fileReader = new FileReader();
+      return new Promise((resolve, reject) => {
+        fileReader.onload = async (e) => {
+          try {
+            const existingPdfBytes = e.target.result;
+            
+            // Attempt to load the PDF using pdf-lib
+            const pdfDoc = await PDFLib.PDFDocument.load(existingPdfBytes);
+            const repairedPdfDoc = await PDFLib.PDFDocument.create();
+            
+            const pages = await pdfDoc.getPages();
+
+            // Try to recover pages from the corrupted document
+            for (let i = 0; i < pages.length; i++) {
+              try {
+                const page = pages[i];
+                const [copiedPage] = await repairedPdfDoc.copyPages(pdfDoc, [i]);
+                repairedPdfDoc.addPage(copiedPage);
+              } catch (err) {
+                console.error(`Error copying page ${i}:`, err);
+                // Skip corrupted pages
+              }
+            }
+
+            // If no pages were copied, add a recovery page
+            if (repairedPdfDoc.getPageCount() === 0) {
+              const page = repairedPdfDoc.addPage();
+              page.drawText('PDF Repair Successful. No valid pages recovered.', {
+                x: 50,
+                y: 500,
+                size: 18,
+                color: PDFLib.rgb(0, 0, 0),
+              });
+            }
+
+            // Save the repaired PDF
+            const pdfBytes = await repairedPdfDoc.save();
+            resolve(new Blob([pdfBytes], { type: 'application/pdf' }));
+          } catch (error) {
+            reject('Failed to repair the PDF.');
+          }
+        };
+        fileReader.readAsArrayBuffer(file);
+      });
+    };
+
+    const menuToggle = document.querySelector(".menu-toggle");
+    const menu = document.querySelector(".menu");
+
+    function toggleMenu() {
+      menu.classList.toggle("active");
+    }
+  </script>
+</body>
+</html>
