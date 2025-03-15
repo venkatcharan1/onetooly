@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remove Pages from PDF Tool</title>
+  <style>
+    /* General Body Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e2a38;
+      color: white;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #9574f7;
+      margin-top: 20px;
+    }
+
+    /* Main Upload Container */
+    .upload-container {
+      width: 70%;
+      max-width: 300px;
+      margin: 50px auto;
+      padding: 30px;
+      border: 2px dashed #9574f7;
+      border-radius: 15px;
+      background-color: #2b3b4d;
+      position: relative;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .upload-container:hover {
+      background-color: #3a4d63;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Icon Style */
+    .upload-container .icon {
+      font-size: 4rem;
+      color: #b0bcd4;
+      margin-bottom: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .upload-container .icon:hover {
+      transform: scale(1.1);
+    }
+
+    /* File Input Label */
+    .upload-container label {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #9574f7;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .upload-container label:hover {
+      background-color: #7a5bd9;
+      transform: translateY(-2px);
+    }
+
+    /* File Input (Hidden) */
+    #fileInput {
+      display: none;
+    }
+
+    /* Remove Button */
+    #removeButton {
+      display: none;
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #ff5733;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    #removeButton:hover {
+      background-color: #e04e2f;
+      transform: translateY(-2px);
+    }
+
+    /* Output Message */
+    #outputMessage {
+      display: none;
+      color: #b0bcd4;
+      margin-top: 20px;
+      font-size: 1.1rem;
+      text-align: center;
+    }
+
+    /* Inserted PDFs List */
+    #insertedPdfList {
+      list-style: none;
+      margin-top: 20px;
+      padding: 0;
+      color: #b0bcd4;
+    }
+
+    #insertedPdfList li {
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    /* Download Button */
+    #downloadButton {
+      display: none;
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #2575fc;
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      text-align: center;
+      display: inline-block;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    #downloadButton:hover {
+      background-color: #6a11cb;
+      transform: translateY(-2px);
+    }
+
+    /* Page Selection */
+    #pageSelection {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .page-option {
+      background-color: #3a4d63;
+      margin: 5px;
+      padding: 8px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      color: #b0bcd4;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .page-option.selected {
+      background-color: #9574f7;
+      color: white;
+    }
+/* Navbar Styles */
+.navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      padding: 1rem 2rem;
+      color: white;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .navbar .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .navbar .menu {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .navbar .menu a {
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .navbar .menu a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .navbar .search-container {
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 20px;
+      padding: 0.3rem 0.5rem;
+    }
+
+    .navbar .search-bar {
+      border: none;
+      outline: none;
+      padding: 0.5rem;
+      border-radius: 20px;
+      width: 150px;
+    }
+
+    .navbar .search-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .navbar .btn {
+      background: #ff7eb3;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .navbar .btn:hover {
+      background: #ff5c9c;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-wrap: wrap;
+      }
+
+      .navbar .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: linear-gradient(90deg, #6a11cb, #2575fc);
+        padding: 1rem 0;
+      }
+
+      .navbar .menu a {
+        text-align: center;
+        margin: 0.5rem 0;
+      }
+
+      .navbar .menu-toggle {
+        display: block;
+      }
+
+      .navbar .menu.active {
+        display: flex;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .navbar .search-bar {
+        width: 300px;
+      }
+    }
+      /* Adjust Upload Container Width on Mobile */
+      .upload-container {
+        width: 90%;
+        padding: 20px;
+      }
+
+      .upload-container label {
+        font-size: 1rem;
+        padding: 10px 20px;
+      }
+
+      .upload-container .icon {
+        font-size: 3rem;
+      }
+
+      /* Adjust Page Selection for Mobile */
+      #pageSelection {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .page-option {
+        width: 80%;
+        padding: 8px 16px;
+        margin: 5px 0;
+      }
+    /* Footer Styling */
+footer {
+  background: #141b26; /* Subtle dark blue background */
+  padding: 60px 0;
+  text-align: center;
+  color: #fff;
+  animation: fadeInFooter 2s ease-out;
+  font-family: 'Arial', sans-serif;
+  box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer Content Wrapper */
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Website Name Styling with Animation */
+.website-name {
+  font-size: 28px;
+  color: #ffdc00; /* Gold for the website name */
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: glowEffect 2s infinite alternate; /* Add glowing animation */
+}
+
+/* Animation for Glowing Effect */
+@keyframes glowEffect {
+  0% {
+      text-shadow: 0 0 10px #ffdc00, 0 0 20px #ffdc00, 0 0 30px #ffdc00;
+  }
+  100% {
+      text-shadow: 0 0 20px #ffc700, 0 0 40px #ffc700, 0 0 60px #ffc700;
+  }
+}
+
+/* Footer Links Styling */
+.footer-links {
+  margin-bottom: 30px;
+}
+
+.footer-link {
+  color: #fff;
+  font-size: 18px;
+  text-decoration: none;
+  margin: 0 20px;
+  padding: 5px 0;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+/* Adding hover underline effect */
+.footer-link:hover {
+  color: #ffdc00;
+}
+
+.footer-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background-color: #ffdc00;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.footer-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Footer Button Container */
+.footer-btn-container {
+  margin-top: 20px;
+}
+
+/* Footer Button Styling */
+.footer-btn {
+  background-color: #ffdc00;
+  color: #1a1a1a;
+  border: none;
+  padding: 12px 24px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer-btn:hover {
+  background-color: #e0b200;
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer Text */
+.footer-text {
+  font-size: 14px;
+  margin-top: 20px;
+  color: #f0f0f0;
+  letter-spacing: 0.5px;
+}
+
+/* Highlighted Name in Footer Text */
+.highlight-name {
+  color: #ffdc00;
+  font-weight: bold;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .footer-links {
+      margin-bottom: 20px;
+  }
+
+  .footer-btn-container {
+      margin-top: 15px;
+  }
+
+  .footer-text {
+      font-size: 12px;
+  }
+
+  .footer-link {
+      font-size: 16px;
+      margin: 0 15px;
+  }
+
+  .website-name {
+      font-size: 24px;
+  }
+}
+
+/* Animation for Footer */
+@keyframes fadeInFooter {
+  0% {
+      opacity: 0;
+      transform: translateY(30px);
+  }
+  100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">OneTooly</div>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    <div class="menu">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="terms and conditons.html">Terms and Conditions</a>
+      <a href="contact us.html">Contact</a>
+    
+      <a href="https://rzp.io/rzp/N4XulPA1" class="btn">Support Us</a>
+    </div>
+  </div>
+
+
+
+  <h1>Remove Pages from PDF Tool</h1>
+
+  <div class="upload-container">
+    <div class="icon">📄</div>
+    <p>Upload your PDF to remove pages. You can select the pages to remove.</p>
+    
+    <label for="fileInput">Choose PDF File</label>
+    <input type="file" id="fileInput" accept=".pdf" />
+    
+    <ul id="insertedPdfList"></ul>
+    
+    <div id="pageSelection"></div>
+
+    <button id="removeButton" style="display: none;">Remove Selected Pages</button>
+    
+    <div id="outputMessage" style="display: none;">Removing pages, please wait...</div>
+    
+    <a id="downloadButton" href="#" style="display: none;">Download Modified PDF</a>
+    
+    <p id="fileName" style="color: #b0bcd4;"></p>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <h2 class="website-name">OneTooly</h2>
+      <div class="footer-links">
+        <a href="about.html" class="footer-link">About</a>
+        <a href="privacy policy.html" class="footer-link">Privacy Policy</a>
+        <a href="terms and conditons.html" class="footer-link">Terms and Conditions</a>
+        <a href="contact us.html" class="footer-link">Contact</a>
+      </div>
+      <div class="footer-btn-container">
+        <a href="https://rzp.io/rzp/N4XulPA1" target="_blank">
+            <button class="footer-btn">Support Us</button>
+        </a>
+    </div>
+      <p class="footer-text">All Rights Reserved &copy; 2025 | <span class="highlight-name">OneTooly</span></p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <script>
+    const fileInput = document.getElementById("fileInput");
+    const pageSelection = document.getElementById("pageSelection");
+    const removeButton = document.getElementById("removeButton");
+    const downloadButton = document.getElementById("downloadButton");
+    const outputMessage = document.getElementById("outputMessage");
+    const insertedPdfList = document.getElementById("insertedPdfList");
+    const fileNameDisplay = document.getElementById("fileName");
+
+    let pdfFile;
+    let pdfDoc;
+    let numPages = 0;
+    let selectedPages = [];
+
+    fileInput.addEventListener("change", async () => {
+      insertedPdfList.innerHTML = "";  // Clear list
+      pageSelection.innerHTML = "";    // Clear page selection
+
+      if (fileInput.files.length > 0) {
+        pdfFile = fileInput.files[0];
+        fileNameDisplay.textContent = `Selected File: ${pdfFile.name}`;
+        
+        // Load PDF using PDF-lib
+        const fileReader = new FileReader();
+        fileReader.onload = async (e) => {
+          const pdfBytes = e.target.result;
+          pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
+          numPages = pdfDoc.getPages().length;
+          
+          // Display page selection
+          displayPages(numPages);
+          removeButton.style.display = "inline-block";
+        };
+        fileReader.readAsArrayBuffer(pdfFile);
+      }
+    });
+
+    function displayPages(totalPages) {
+      for (let i = 1; i <= totalPages; i++) {
+        const pageOption = document.createElement("div");
+        pageOption.classList.add("page-option");
+        pageOption.textContent = `Page ${i}`;
+        pageOption.dataset.page = i;
+        pageOption.addEventListener("click", () => togglePageSelection(pageOption));
+        pageSelection.appendChild(pageOption);
+      }
+    }
+
+    function togglePageSelection(pageOption) {
+      pageOption.classList.toggle("selected");
+      const pageNum = parseInt(pageOption.dataset.page);
+
+      if (pageOption.classList.contains("selected")) {
+        selectedPages.push(pageNum);
+      } else {
+        selectedPages = selectedPages.filter(page => page !== pageNum);
+      }
+
+      removeButton.style.display = selectedPages.length > 0 ? "inline-block" : "none";
+    }
+
+    removeButton.addEventListener("click", async () => {
+      outputMessage.style.display = "block";
+      outputMessage.textContent = `Removing pages, please wait...`;
+
+      // Remove selected pages from the document
+      const pagesToRemove = new Set(selectedPages);
+      const newPdf = await PDFLib.PDFDocument.create();
+      const pages = pdfDoc.getPages();
+
+      for (let i = 0; i < pages.length; i++) {
+        if (!pagesToRemove.has(i + 1)) {
+          const [copiedPage] = await newPdf.copyPages(pdfDoc, [i]);
+          newPdf.addPage(copiedPage);
+        }
+      }
+
+      // Prepare the modified PDF for download
+      const modifiedPdfBytes = await newPdf.save();
+      
+      // Create a download link for the modified PDF
+      const downloadUrl = URL.createObjectURL(new Blob([modifiedPdfBytes], { type: "application/pdf" }));
+      
+      // Trigger the download automatically
+      downloadButton.href = downloadUrl;
+      downloadButton.download = "modified_pdf.pdf"; // This triggers the download
+      downloadButton.style.display = "inline-block";
+      
+      // Optionally, trigger the click event of the download button programmatically
+      downloadButton.click();
+      
+      outputMessage.textContent = `Pages removed: ${selectedPages.join(", ")}`;
+    });
+
+    function toggleMenu() {
+      const menu = document.querySelector('.navbar .menu');
+      menu.classList.toggle('active');
+    }
+  </script>
+</body>
+</html>
