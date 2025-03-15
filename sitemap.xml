@@ -8,23 +8,33 @@
 
 
 <url>
-  <loc>https://onetooly.netlify.app/</loc>
-  <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+  <loc>https://onetooly.in/</loc>
+  <lastmod>2025-03-15T13:22:28+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://onetooly.netlify.app/about</loc>
-  <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+  <loc>https://onetooly.in/about</loc>
+  <lastmod>2025-03-15T13:22:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://onetooly.netlify.app/terms%20and%20conditons.html</loc>
-  <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+  <loc>https://onetooly.in/privacy%20policy.html</loc>
+  <lastmod>2025-03-15T13:22:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://onetooly.netlify.app/contact%20us.html</loc>
-  <lastmod>2025-01-17T07:36:13+00:00</lastmod>
+  <loc>https://onetooly.in/terms%20and%20conditons.html</loc>
+  <lastmod>2025-03-15T13:22:28+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://onetooly.in/contact%20us.html</loc>
+  <lastmod>2025-03-15T13:22:28+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://onetooly.in/blog</loc>
+  <lastmod>2025-03-15T13:22:28+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 
