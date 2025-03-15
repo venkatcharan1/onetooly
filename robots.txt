@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: /private/
 Allow: /
-Sitemap: https://onetooly.netlify.app/sitemap.xml
+Sitemap: https://onetooly.in/sitemap.xml
