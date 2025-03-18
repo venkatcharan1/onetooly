@@ -1345,30 +1345,50 @@ ul {
 }
 
 /* Pop-Up Modal */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.3s, opacity 0.3s ease;
+}
+
+.popup.show {
+  visibility: visible;
+  opacity: 1;
+}
+
 .popup-content {
   background: white;
-  padding: 18px;
+  padding: 20px;
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  max-width: 320px; /* Reduced width */
-  width: 80%;
+  max-width: 420px; /* Increase width slightly */
+  width: 90%;
   position: relative;
 }
 
 /* Headings */
 .popup-content h2 {
   color: #4f46e5;
-  font-size: 1.4rem; /* Increased heading size */
-  font-weight: bold;
+  font-size: 15px;
   margin-bottom: 10px;
 }
 
 /* Paragraphs */
 .popup-content p {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #374151;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 /* Buttons */
@@ -1377,12 +1397,12 @@ ul {
   width: 80%;
   background: linear-gradient(90deg, #6a11cb, #2575fc);
   color: white;
-  padding: 8px;
+  padding: 10px;
   border-radius: 5px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: bold;
   text-decoration: none;
-  margin: 8px auto;
+  margin: 10px auto;
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
@@ -1394,8 +1414,8 @@ ul {
 /* Close Button */
 .popup-close-btn {
   position: absolute;
-  top: 8px;
-  right: 10px;
+  top: 10px;
+  right: 12px;
   background: none;
   border: none;
   font-size: 18px;
@@ -1408,59 +1428,60 @@ ul {
   color: #ff0000;
 }
 
+/* Separator Line */
+hr {
+  margin: 15px 0;
+  border: 0.5px solid #ddd;
+}
 
 /* 📌 Responsive Adjustments */
-@media (min-width: 1024px) {  /* Desktops */
+@media (min-width: 1024px) {
   .popup-content {
-    max-width: 300px; /* Further reduced */
-    padding: 16px;
-  }
-
-  .popup-content h2 {
-    font-size: 1.7rem;
+    max-width: 400px; /* Keep it balanced */
+    padding: 25px;
   }
 }
 
-@media (max-width: 1023px) {  /* Laptops & Tablets */
+@media (max-width: 1023px) {
   .popup-content {
-    max-width: 290px;
+    max-width: 380px;
+    padding: 20px;
+  }
+
+  .popup-content h2 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .popup-content {
+    max-width: 90%;
+    padding: 18px;
+  }
+
+  .popup-content h2 {
+    font-size: 1.2rem;
+  }
+
+  .popup-content .popup-btn {
+    width: 100%;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .popup-content {
+    max-width: 95%;
     padding: 15px;
   }
 
   .popup-content h2 {
-    font-size: 1.6rem;
-  }
-}
-
-@media (max-width: 768px) {  /* Tablets & Small Screens */
-  .popup-content {
-    max-width: 85%;
-    padding: 14px;
-  }
-
-  .popup-content h2 {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
   }
 
   .popup-content .popup-btn {
-    width: 90%;
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 480px) {  /* Mobile */
-  .popup-content {
-    max-width: 90%;
-    padding: 12px;
-  }
-
-  .popup-content h2 {
-    font-size: 1.4rem;
-  }
-
-  .popup-content .popup-btn {
-    padding: 7px;
-    font-size: 0.85rem;
+    padding: 8px;
+    font-size: 0.8rem;
   }
 }
 
