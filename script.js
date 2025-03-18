@@ -70,6 +70,51 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+//manifest json
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (event) => {
+    // Prevent the default install banner
+    event.preventDefault();
+    deferredPrompt = event;
+
+    // Show install suggestion after 3 seconds
+    setTimeout(() => {
+        showInstallBanner();
+    }, 3000);
+});
+
+function showInstallBanner() {
+    if (!deferredPrompt) return;
+
+    // Custom popup
+    let installBanner = document.createElement("div");
+    installBanner.innerHTML = `
+        <div style="position:fixed; bottom:10px; left:10px; right:10px; background:#fff; padding:15px; 
+        box-shadow:0px 4px 10px rgba(0,0,0,0.2); border-radius:10px; text-align:center; z-index:1000;">
+            <p style="margin:0;">Install OneTooly for a better experience!</p>
+            <button id="installBtn" style="background:#007bff; color:white; border:none; padding:10px 15px; 
+            margin-top:10px; cursor:pointer; border-radius:5px;">Install Now</button>
+        </div>
+    `;
+
+    document.body.appendChild(installBanner);
+
+    // Handle install button click
+    document.getElementById("installBtn").addEventListener("click", () => {
+        installBanner.remove();
+        deferredPrompt.prompt();
+
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === "accepted") {
+                console.log("User accepted install prompt");
+            } else {
+                console.log("User dismissed install prompt");
+            }
+            deferredPrompt = null;
+        });
+    });
+}
 
 
 
