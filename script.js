@@ -69,10 +69,37 @@ document.addEventListener('DOMContentLoaded', () => {
   handleScroll(); // Trigger on page load in case sections are already in view
 });
 
-// Register the Service Worker
+
+
+
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault(); // Prevent default prompt
+  deferredPrompt = event;
+
+  // Show the "Install App" button inside the pop-up
+  let installBtn = document.getElementById("install-btn");
+  installBtn.style.display = "block"; // Show button
+
+  installBtn.addEventListener("click", () => {
+    deferredPrompt.prompt(); // Show install prompt
+
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === "accepted") {
+        console.log("✅ User installed the app");
+      } else {
+        console.log("❌ User dismissed the install prompt");
+      }
+      installBtn.style.display = "none"; // Hide button after interaction
+    });
+  });
+});
+
+
+// Register the service worker
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/service-worker.js")
     .then(() => console.log("✅ Service Worker Registered!"))
     .catch((error) => console.error("❌ Service Worker Registration Failed:", error));
 }
-
