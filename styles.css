@@ -1369,25 +1369,25 @@ ul {
 
 .popup-content {
   background: white;
-  padding: 25px;
+  padding: 30px;
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  max-width: 350px; /* Reduced size for better UX */
+  max-width: 500px; /* Increased for better desktop view */
   width: 90%;
-  position: relative; /* Position set for the close button */
+  position: relative;
 }
 
 /* Headings and Text */
 .popup-content h2 {
   color: #4f46e5; /* Indigo */
   margin-bottom: 10px;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 }
 
 .popup-content p {
-  font-size: 1rem;
-  color: #374151; /* Neutral Gray */
+  font-size: 1.1rem;
+  color: #374151;
   margin-bottom: 15px;
 }
 
@@ -1409,14 +1409,14 @@ ul {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Close Button Styling */
+/* Close Button */
 .popup-close-btn {
   position: absolute;
   top: 12px;
   right: 15px;
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
   cursor: pointer;
   color: #333;
@@ -1424,18 +1424,57 @@ ul {
 }
 
 .popup-close-btn:hover {
-  color: #ff0000; /* Changes color to red on hover */
+  color: #ff0000;
 }
 
 /* Responsive Adjustments */
+
+/* Large screens (Desktops, Laptops) */
+@media (min-width: 1024px) {
+  .popup-content {
+    max-width: 500px;
+    padding: 35px;
+  }
+
+  .popup-content h2 {
+    font-size: 2rem;
+  }
+
+  .popup-content p {
+    font-size: 1.2rem;
+  }
+}
+
+/* Medium screens (Tablets, small laptops) */
+@media (max-width: 1023px) {
+  .popup-content {
+    max-width: 450px;
+    padding: 25px;
+  }
+
+  .popup-content h2 {
+    font-size: 1.7rem;
+  }
+
+  .popup-content p {
+    font-size: 1rem;
+  }
+
+  .popup-content .popup-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Small screens (Mobile phones) */
 @media (max-width: 768px) {
   .popup-content {
-    max-width: 90%; /* Adjust modal size for smaller screens */
+    max-width: 90%;
     padding: 20px;
   }
 
   .popup-content h2 {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   }
 
   .popup-content p {
@@ -1443,12 +1482,37 @@ ul {
   }
 
   .popup-content .popup-btn {
-    padding: 0.6rem 1rem;
-    font-size: 0.9rem;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.85rem;
   }
 
   .popup-close-btn {
     font-size: 18px;
+  }
+}
+
+/* Extra small screens (Very small phones) */
+@media (max-width: 480px) {
+  .popup-content {
+    max-width: 95%;
+    padding: 15px;
+  }
+
+  .popup-content h2 {
+    font-size: 1.3rem;
+  }
+
+  .popup-content p {
+    font-size: 0.8rem;
+  }
+
+  .popup-content .popup-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .popup-close-btn {
+    font-size: 16px;
   }
 }
 
