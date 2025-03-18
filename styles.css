@@ -1344,7 +1344,6 @@ ul {
   }
 }
 
-
 /* Pop-Up Modal */
 .popup {
   position: fixed;
@@ -1373,16 +1372,17 @@ ul {
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  max-width: 420px; /* Increase width slightly */
-  width: 90%;
+  max-width: 380px; /* Reduced width */
+  width: 85%;
   position: relative;
 }
 
 /* Headings */
 .popup-content h2 {
   color: #4f46e5;
-  font-size: 15px;
-  margin-bottom: 10px;
+  font-size: 1.5rem; /* Increased heading size */
+  font-weight: bold;
+  margin-bottom: 12px;
 }
 
 /* Paragraphs */
@@ -1395,12 +1395,12 @@ ul {
 /* Buttons */
 .popup-content .popup-btn {
   display: block;
-  width: 80%;
+  width: 75%;
   background: linear-gradient(90deg, #6a11cb, #2575fc);
   color: white;
   padding: 10px;
   border-radius: 5px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: bold;
   text-decoration: none;
   margin: 10px auto;
@@ -1436,53 +1436,57 @@ hr {
 }
 
 /* 📌 Responsive Adjustments */
-@media (min-width: 1024px) {
+@media (min-width: 1024px) {  /* Desktops */
   .popup-content {
-    max-width: 400px; /* Keep it balanced */
-    padding: 25px;
+    max-width: 350px; /* Reduced for desktop */
+    padding: 22px;
+  }
+
+  .popup-content h2 {
+    font-size: 1.7rem; /* Bigger heading */
   }
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1023px) {  /* Laptops & Tablets */
   .popup-content {
-    max-width: 380px;
+    max-width: 340px;
     padding: 20px;
   }
 
   .popup-content h2 {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px) {  /* Tablets & Small Screens */
   .popup-content {
     max-width: 90%;
     padding: 18px;
   }
 
   .popup-content h2 {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
 
   .popup-content .popup-btn {
     width: 100%;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 480px) {  /* Mobile */
   .popup-content {
     max-width: 95%;
     padding: 15px;
   }
 
   .popup-content h2 {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
   }
 
   .popup-content .popup-btn {
     padding: 8px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
 }
 
