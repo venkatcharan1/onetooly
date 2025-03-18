@@ -1369,31 +1369,34 @@ ul {
 
 .popup-content {
   background: white;
-  padding: 30px;
+  padding: 25px;
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  max-width: 400px;
+  max-width: 350px; /* Reduced size for better UX */
   width: 90%;
   position: relative; /* Position set for the close button */
 }
 
+/* Headings and Text */
 .popup-content h2 {
   color: #4f46e5; /* Indigo */
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
 }
 
 .popup-content p {
   font-size: 1rem;
   color: #374151; /* Neutral Gray */
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
+/* Buttons */
 .popup-content .popup-btn {
   display: inline-block;
   background: linear-gradient(90deg, #6a11cb, #2575fc);
   color: white;
-  padding: 0.8rem 1.5rem;
+  padding: 0.7rem 1.3rem;
   border-radius: 5px;
   font-size: 1rem;
   font-weight: bold;
@@ -1409,7 +1412,7 @@ ul {
 /* Close Button Styling */
 .popup-close-btn {
   position: absolute;
-  top: 10px;
+  top: 12px;
   right: 15px;
   background: none;
   border: none;
@@ -1427,11 +1430,12 @@ ul {
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .popup-content {
+    max-width: 90%; /* Adjust modal size for smaller screens */
     padding: 20px;
   }
 
   .popup-content h2 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .popup-content p {
