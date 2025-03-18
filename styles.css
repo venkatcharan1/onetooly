@@ -1369,24 +1369,24 @@ ul {
 
 .popup-content {
   background: white;
-  padding: 30px;
+  padding: 20px;
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  max-width: 500px; /* Increased for better desktop view */
+  max-width: 350px; /* Smaller size for better visibility */
   width: 90%;
   position: relative;
 }
 
 /* Headings and Text */
 .popup-content h2 {
-  color: #4f46e5; /* Indigo */
+  color: #4f46e5;
+  font-size: 1.5rem;
   margin-bottom: 10px;
-  font-size: 1.8rem;
 }
 
 .popup-content p {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #374151;
   margin-bottom: 15px;
 }
@@ -1396,9 +1396,9 @@ ul {
   display: inline-block;
   background: linear-gradient(90deg, #6a11cb, #2575fc);
   color: white;
-  padding: 0.7rem 1.3rem;
+  padding: 0.6rem 1.2rem;
   border-radius: 5px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: bold;
   text-decoration: none;
   transition: transform 0.3s, box-shadow 0.3s;
@@ -1412,11 +1412,11 @@ ul {
 /* Close Button */
 .popup-close-btn {
   position: absolute;
-  top: 12px;
-  right: 15px;
+  top: 8px;
+  right: 12px;
   background: none;
   border: none;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: bold;
   cursor: pointer;
   color: #333;
@@ -1427,75 +1427,29 @@ ul {
   color: #ff0000;
 }
 
-/* Responsive Adjustments */
+/* 📌 Responsive Adjustments */
 
 /* Large screens (Desktops, Laptops) */
 @media (min-width: 1024px) {
   .popup-content {
-    max-width: 500px;
-    padding: 35px;
-  }
-
-  .popup-content h2 {
-    font-size: 2rem;
-  }
-
-  .popup-content p {
-    font-size: 1.2rem;
-  }
-}
-
-/* Medium screens (Tablets, small laptops) */
-@media (max-width: 1023px) {
-  .popup-content {
-    max-width: 450px;
+    max-width: 350px; /* Decreased size */
     padding: 25px;
   }
 
   .popup-content h2 {
-    font-size: 1.7rem;
+    font-size: 1.4rem;
   }
 
   .popup-content p {
     font-size: 1rem;
   }
-
-  .popup-content .popup-btn {
-    padding: 0.6rem 1rem;
-    font-size: 0.9rem;
-  }
 }
 
-/* Small screens (Mobile phones) */
-@media (max-width: 768px) {
+/* Medium screens (Tablets) */
+@media (max-width: 1023px) {
   .popup-content {
-    max-width: 90%;
+    max-width: 320px;
     padding: 20px;
-  }
-
-  .popup-content h2 {
-    font-size: 1.5rem;
-  }
-
-  .popup-content p {
-    font-size: 0.9rem;
-  }
-
-  .popup-content .popup-btn {
-    padding: 0.5rem 0.9rem;
-    font-size: 0.85rem;
-  }
-
-  .popup-close-btn {
-    font-size: 18px;
-  }
-}
-
-/* Extra small screens (Very small phones) */
-@media (max-width: 480px) {
-  .popup-content {
-    max-width: 95%;
-    padding: 15px;
   }
 
   .popup-content h2 {
@@ -1503,16 +1457,62 @@ ul {
   }
 
   .popup-content p {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
   }
 
   .popup-content .popup-btn {
-    padding: 0.4rem 0.8rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Small screens (Mobile phones) */
+@media (max-width: 768px) {
+  .popup-content {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  .popup-content h2 {
+    font-size: 1.2rem;
+  }
+
+  .popup-content p {
+    font-size: 0.9rem;
+  }
+
+  .popup-content .popup-btn {
+    padding: 0.4rem 0.9rem;
     font-size: 0.8rem;
   }
 
   .popup-close-btn {
     font-size: 16px;
+  }
+}
+
+/* Extra small screens (Very small phones) */
+@media (max-width: 480px) {
+  .popup-content {
+    max-width: 95%;
+    padding: 12px;
+  }
+
+  .popup-content h2 {
+    font-size: 1.1rem;
+  }
+
+  .popup-content p {
+    font-size: 0.85rem;
+  }
+
+  .popup-content .popup-btn {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.75rem;
+  }
+
+  .popup-close-btn {
+    font-size: 14px;
   }
 }
 
