@@ -1,8 +1,16 @@
+# Fix spaces and incorrect folder names
+/pdf tools/organize pdf tools/about /pdf-tools/organize-pdf-tools/about 301
+/other-tools/contact us.html /other-tools/contact-us.html 301
+/image tools/contact us.html /image-tools/contact-us.html 301
+/other-tools/privacy policy.html /other-tools/privacy-policy.html 301
+/image tools/privacy policy.html /image-tools/privacy-policy.html 301
+
+# Fix previously reported 404 errors
 /contact.html /contact 301
-/terms%20and%20conditions.html /terms-and-conditions 301
+/terms and conditions.html /terms-and-conditions 301
 /learn-programming /learn-programming.html 301
 /other-tools/index.html /other-tools/ 301
-/image%20tools/terms%20and%20conditions.html /image-tools/terms-and-conditions 301
-/other-tools/terms%20and%20conditions.html /other-tools/terms-and-conditions 301
-/image%20tools/privacy-policy.html /image-tools/privacy-policy 301
-/image%20tools/contact.html /image-tools/contact 301
+/image tools/terms and conditions.html /image-tools/terms-and-conditions 301
+/other-tools/terms and conditions.html /other-tools/terms-and-conditions 301
+/image tools/privacy-policy.html /image-tools/privacy-policy 301
+/image tools/contact.html /image-tools/contact 301
