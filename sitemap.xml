@@ -1,42 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
-
-
-<url>
-  <loc>https://onetooly.in/</loc>
-  <lastmod>2025-03-15T13:22:28+00:00</lastmod>
-  <priority>1.00</priority>
-</url>
-<url>
-  <loc>https://onetooly.in/about</loc>
-  <lastmod>2025-03-15T13:22:28+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://onetooly.in/privacy%20policy.html</loc>
-  <lastmod>2025-03-15T13:22:28+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://onetooly.in/terms%20and%20conditons.html</loc>
-  <lastmod>2025-03-15T13:22:28+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://onetooly.in/contact%20us.html</loc>
-  <lastmod>2025-03-15T13:22:28+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://onetooly.in/blog</loc>
-  <lastmod>2025-03-15T13:22:28+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://onetooly.in/</loc>
+    <lastmod>2025-03-15T13:22:28+00:00</lastmod>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.in/about</loc>
+    <lastmod>2025-03-15T13:22:28+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.in/privacy-policy.html</loc>  <!-- Fixed spaces -->
+    <lastmod>2025-03-15T13:22:28+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.in/terms-and-conditions.html</loc>  <!-- Fixed typo and spaces -->
+    <lastmod>2025-03-15T13:22:28+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.in/contact-us.html</loc>  <!-- Fixed spaces -->
+    <lastmod>2025-03-15T13:22:28+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://onetooly.in/blog</loc>
+    <lastmod>2025-03-15T13:22:28+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
 </urlset>
