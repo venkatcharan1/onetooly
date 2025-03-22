@@ -93,14 +93,19 @@
       <a href="#" class="btn">Get started</a>
     </div>
     <div class="home-image">
-     <picture>
+    <picture>
+    <!-- WebP Format -->
     <source srcset="https://res.cloudinary.com/dsgdashea/image/upload/f_auto,q_auto,w_600,h_400/v1735292472/DALL_E_2024-12-27_15.07.55.webp" type="image/webp">
-    <img src="https://res.cloudinary.com/dsgdashea/image/upload/f_auto,q_auto,w_600,h_400/v1735292472/DALL_E_2024-12-27_15.07.55.webp"
-         alt="Developer using futuristic digital tools"
+    
+    <!-- Fallback for Browsers That Don't Support WebP -->
+    <img src="https://res.cloudinary.com/dsgdashea/image/upload/f_auto,q_auto,w_600,h_400/v1735292472/DALL_E_2024-12-27_15.07.55.jpg" 
+         alt="Tools Illustration"
          width="600" height="400"
          loading="lazy"
-         decoding="async">
+         decoding="async"
+         onerror="this.onerror=null; this.src='https://res.cloudinary.com/dsgdashea/image/upload/v1735292472/DALL_E_2024-12-27_15.07.55.jpg';">
 </picture>
+
 
     </div>
     
