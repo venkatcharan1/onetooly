@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word to PDF Converter</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <style>
+/* General Styles */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #1c2431;
+  color: white;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align content to top */
+  align-items: stretch; /* Ensure full width */
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+h1 {
+  color: #9574f7;
+  margin-top: 60px;
+  font-size: 2.5rem;
+  padding-top: 10px;
+  text-align: center;
+  margin-bottom: -50px;
+}
+
+/* Navbar Styles */
+.navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      padding: 1rem 2rem;
+      color: white;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .navbar .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .navbar .menu {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .navbar .menu a {
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .navbar .menu a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .navbar .search-container {
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 20px;
+      padding: 0.3rem 0.5rem;
+    }
+
+    .navbar .search-bar {
+      border: none;
+      outline: none;
+      padding: 0.5rem;
+      border-radius: 20px;
+      width: 150px;
+    }
+
+    .navbar .search-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .navbar .btn {
+      background: #ff7eb3;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .navbar .btn:hover {
+      background: #ff5c9c;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-wrap: wrap;
+      }
+
+      .navbar .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: linear-gradient(90deg, #6a11cb, #2575fc);
+        padding: 1rem 0;
+      }
+
+      .navbar .menu a {
+        text-align: center;
+        margin: 0.5rem 0;
+      }
+
+      .navbar .menu-toggle {
+        display: block;
+      }
+
+      .navbar .menu.active {
+        display: flex;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .navbar .search-bar {
+        width: 300px;
+      }
+    }
+
+/* Upload Container Styles */
+.upload-container {
+  width: 90%;
+  max-width: 550px;
+  margin-top: 120px; /* Adjust margin to prevent overlap with fixed navbar */
+  padding: 40px 25px;
+  border: 2px dashed #9574f7;
+  border-radius: 10px;
+  background-color: #2b3b4d;
+  position: relative;
+  box-sizing: border-box;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: auto; /* Center the container */
+  margin-right: auto; /* Center the container */
+}
+
+.upload-container label {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #9574f7;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.upload-container label:hover {
+  background-color: #7a5bd9;
+}
+
+.upload-container input[type="file"] {
+  display: none;
+}
+
+#fileName {
+  color: #b0bcd4;
+  margin-top: 10px;
+  font-size: 0.8rem;
+}
+
+/* Button Styles */
+#convertButton, #downloadButton {
+  margin-top: 20px;
+  padding: 8px 15px;
+  background-color: #ff7eb3;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#convertButton:hover, #downloadButton:hover {
+  background-color: #ff5c9c;
+}
+
+#downloadButton {
+  display: none;
+  text-decoration: none;
+}
+
+/* Loader Styles */
+#loader {
+  position: relative;
+  display: none;
+  text-align: center;
+  margin-top: 20px;  /* Gap between Convert button and Loader */
+}
+
+.loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #9574f7;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+}
+
+/* Loading Text */
+.loading-text-container {
+  display: none; /* Hide loading text initially */
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+.loading-text {
+  color: #ffffff;
+  font-size: 1rem;
+  margin-left: 10px; /* Moves the text slightly to the left */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+    margin-top: 100px; /* Added margin to ensure h1 doesn't get covered by navbar */
+  }
+
+  .upload-container {
+    width: 95%;
+    padding: 30px 20px;
+    min-height: 380px;
+    margin-top: 100px; /* Adjust top margin for mobile */
+  }
+
+  .upload-container label {
+    font-size: 0.9rem;
+    padding: 8px 14px;
+  }
+
+  #convertButton, #downloadButton {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+
+  #fileName {
+    font-size: 0.7rem;
+  }
+
+  .loader {
+    width: 40px;
+    height: 40px;
+  }
+
+  .loading-text {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .upload-container {
+    padding: 20px 15px;
+    min-height: 350px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .loader {
+    width: 40px;
+    height: 40px;
+  }
+
+  .loading-text {
+    font-size: 0.8rem;
+  }
+}
+/* Footer Styling */
+footer {
+  background: #141b26; /* Subtle dark blue background */
+  padding: 60px 0;
+  text-align: center;
+  color: #fff;
+  animation: fadeInFooter 2s ease-out;
+  font-family: 'Arial', sans-serif;
+  box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer Content Wrapper */
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Website Name Styling with Animation */
+.website-name {
+  font-size: 28px;
+  color: #ffdc00; /* Gold for the website name */
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: glowEffect 2s infinite alternate; /* Add glowing animation */
+}
+
+/* Animation for Glowing Effect */
+@keyframes glowEffect {
+  0% {
+      text-shadow: 0 0 10px #ffdc00, 0 0 20px #ffdc00, 0 0 30px #ffdc00;
+  }
+  100% {
+      text-shadow: 0 0 20px #ffc700, 0 0 40px #ffc700, 0 0 60px #ffc700;
+  }
+}
+
+/* Footer Links Styling */
+.footer-links {
+  margin-bottom: 30px;
+}
+
+.footer-link {
+  color: #fff;
+  font-size: 18px;
+  text-decoration: none;
+  margin: 0 20px;
+  padding: 5px 0;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+/* Adding hover underline effect */
+.footer-link:hover {
+  color: #ffdc00;
+}
+
+.footer-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background-color: #ffdc00;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.footer-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Footer Button Container */
+.footer-btn-container {
+  margin-top: 20px;
+}
+
+/* Footer Button Styling */
+.footer-btn {
+  background-color: #ffdc00;
+  color: #1a1a1a;
+  border: none;
+  padding: 12px 24px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer-btn:hover {
+  background-color: #e0b200;
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer Text */
+.footer-text {
+  font-size: 14px;
+  margin-top: 20px;
+  color: #f0f0f0;
+  letter-spacing: 0.5px;
+}
+
+/* Highlighted Name in Footer Text */
+.highlight-name {
+  color: #ffdc00;
+  font-weight: bold;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .footer-links {
+      margin-bottom: 20px;
+  }
+
+  .footer-btn-container {
+      margin-top: 15px;
+  }
+
+  .footer-text {
+      font-size: 12px;
+  }
+
+  .footer-link {
+      font-size: 16px;
+      margin: 0 15px;
+  }
+
+  .website-name {
+      font-size: 24px;
+  }
+}
+
+/* Animation for Footer */
+@keyframes fadeInFooter {
+  0% {
+      opacity: 0;
+      transform: translateY(30px);
+  }
+  100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">OneTooly</div>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    <div class="menu">
+      <a href="/index.html">Home</a>
+          <a href="/about.html">About</a>
+          <a href="/privacy-policy.html">Privacy Policy</a>
+          <a href="/terms-and-conditons.html">Terms and Conditions</a>
+          <a href="/contact-us.html">Contact</a>
+    
+      <a href="https://rzp.io/rzp/N4XulPA1" class="btn">Support Us</a>
+    </div>
+  </div>
+
+
+
+  <h1>Word to PDF Converter</h1>
+
+  <div class="upload-container">
+    <label for="fileInput">Choose Word File</label>
+    <input type="file" id="fileInput" accept=".docx" />
+    <p id="fileName"></p>
+
+    <button id="convertButton">Convert to PDF</button>
+
+    <!-- Loader -->
+    <div id="loader">
+      <div class="loader"></div>
+    </div>
+
+    <!-- Loading Text -->
+    <div class="loading-text-container">
+      <p class="loading-text">Converting... Please wait.</p>
+    </div>
+
+    <a id="downloadButton">Download PDF</a>
+  </div>
+  <footer>
+    <div class="footer-content">
+      <h2 class="website-name">OneTooly</h2>
+      <div class="footer-links">
+        <a href="/about.html" class="footer-link">About</a>
+        <a href="/privacy-policy.html" class="footer-link">Privacy Policy</a>
+        <a href="/terms-and-conditons.html" class="footer-link">Terms and Conditions</a>
+        <a href="/contact-us.html" class="footer-link">Contact</a>
+
+      </div>
+      <div class="footer-btn-container">
+        <a href="https://rzp.io/rzp/N4XulPA1" target="_blank">
+            <button class="footer-btn">Support Us</button>
+        </a>
+    </div>
+      <p class="footer-text">All Rights Reserved &copy; 2025 | <span class="highlight-name">OneTooly</span></p>
+    </div>
+  </footer>
+
+
+
+
+  <script>
+    const fileInput = document.getElementById("fileInput");
+    const fileNameDisplay = document.getElementById("fileName");
+    const convertButton = document.getElementById("convertButton");
+    const downloadButton = document.getElementById("downloadButton");
+    const loader = document.getElementById("loader");
+    const loadingTextContainer = document.querySelector(".loading-text-container");
+
+    fileInput.addEventListener("change", () => {
+      fileNameDisplay.textContent = fileInput.files[0]?.name || "No file selected";
+    });
+
+    convertButton.addEventListener("click", async () => {
+      if (!fileInput.files[0]) {
+        alert("Please select a Word file.");
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      // Show loader and text when conversion starts
+      loader.style.display = "block";
+      loadingTextContainer.style.display = "flex"; // Show loading text
+
+      reader.onload = async (e) => {
+        const arrayBuffer = e.target.result;
+
+        try {
+          // Load the Word file as a JSZip instance
+          const zip = await JSZip.loadAsync(arrayBuffer);
+
+          // Extract text using Mammoth.js
+          const docxData = zip.file("word/document.xml");
+          const docText = await docxData.async("text");
+          const { value: extractedText } = await mammoth.extractRawText({ arrayBuffer });
+
+          // Create a PDF using jsPDF
+          const { jsPDF } = window.jspdf;
+          const pdf = new jsPDF();
+
+          // Add extracted text to the PDF
+          const lines = pdf.splitTextToSize(extractedText, 180); // 180mm width for text wrapping
+          pdf.text(lines, 10, 10);
+
+          // Extract and add images from the document
+          let yOffset = 20; // To position images below the text
+          zip.forEach((relativePath, file) => {
+            if (file.name.includes("media")) {
+              file.async("base64").then((imgData) => {
+                pdf.addImage(imgData, "JPEG", 10, yOffset, 180, 100);
+                yOffset += 110; // Adjust yOffset for each image
+              });
+            }
+          });
+
+          // Wait for all images to be processed before generating the PDF
+          setTimeout(() => {
+            // Generate Blob and allow downloading the PDF
+            const blob = pdf.output("blob");
+            downloadButton.style.display = "inline-block"; // Show download button
+            downloadButton.href = URL.createObjectURL(blob);
+            downloadButton.download = "converted.pdf";
+
+            // Hide loader and text
+            loader.style.display = "none"; // Hide loader
+            loadingTextContainer.style.display = "none"; // Hide loading text
+
+            alert("Conversion Complete! Download your PDF.");
+          }, 2000); // Timeout to allow image data processing
+
+        } catch (error) {
+          console.error("Error while converting Word to PDF:", error);
+          alert("Failed to convert the Word document.");
+          loader.style.display = "none"; // Hide loader in case of error
+          loadingTextContainer.style.display = "none"; // Hide loading text in case of error
+        }
+      };
+
+      reader.readAsArrayBuffer(file);
+    });
+    
+  const menuToggle = document.querySelector(".menu-toggle");
+    const menu = document.querySelector(".menu");
+
+    function toggleMenu() {
+      menu.classList.toggle("active");
+    }
+  </script>
+</body>
+</html>
