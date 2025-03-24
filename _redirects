@@ -14,3 +14,9 @@
 /other-tools/terms and conditions.html /other-tools/terms-and-conditions 301
 /image tools/privacy-policy.html /image-tools/privacy-policy 301
 /image tools/contact.html /image-tools/contact 301
+
+# Ensure canonical redirects
+/image-tools/privacy-policy.html /privacy-policy.html 301
+/other-tools/privacy-policy.html /privacy-policy.html 301
+/image-tools/contact-us.html /contact-us.html 301
+/other-tools/contact-us.html /contact-us.html 301
