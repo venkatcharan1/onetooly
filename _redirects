@@ -20,3 +20,8 @@
 /other-tools/privacy-policy.html /privacy-policy.html 301
 /image-tools/contact-us.html /contact-us.html 301
 /other-tools/contact-us.html /contact-us.html 301
+
+# Fix "Crawled - currently not indexed" pages
+/pdf tools/edit pdf tools/add-page-numbers.html /pdf-tools/edit-pdf-tools/add-page-numbers.html 301
+/pdf tools/Convert to PDF tools/word-to-pdf.html /pdf-tools/convert-to-pdf-tools/word-to-pdf.html 301
+/pdf tools/optimize pdf tools/compress-pdf /pdf-tools/optimize-pdf-tools/compress-pdf.html 301
