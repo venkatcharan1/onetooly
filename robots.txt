@@ -1,14 +1,5 @@
 User-agent: *
 Disallow: /private/
 
-# Ensure Google can crawl important pages
-Allow: /pdf-tools/edit-pdf-tools/add-page-numbers.html
-Allow: /pdf-tools/convert-to-pdf-tools/word-to-pdf.html
-Allow: /pdf-tools/optimize-pdf-tools/compress-pdf.html
-Allow: /image-tools/privacy-policy.html
-Allow: /other-tools/privacy-policy.html
-Allow: /image-tools/contact-us.html
-Allow: /other-tools/contact-us.html
-
 # Specify sitemap for indexing
 Sitemap: https://onetooly.in/sitemap.xml
