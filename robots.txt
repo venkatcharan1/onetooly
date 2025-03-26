@@ -1,4 +1,5 @@
 User-agent: *
+Allow: /ads.txt
 Disallow: /private/
 
 # Specify sitemap for indexing
