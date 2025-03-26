@@ -1,6 +1,3 @@
 User-agent: *
-Allow: /ads.txt
-Disallow: /private/
-
-# Specify sitemap for indexing
+Allow: /
 Sitemap: https://onetooly.in/sitemap.xml
